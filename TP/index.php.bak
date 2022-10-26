@@ -1,0 +1,40 @@
+<?php
+# When installed via composer
+require_once 'vendor/autoload.php';
+require_once 'database.php';
+
+class index extends database
+{
+	public function insertDatauser($data)
+	{
+		return $this->insert('users',$data);
+	}
+	public function insertDataproduct($data)
+	{
+		return $this->insert('products',$data);
+	}
+}
+
+// use the factory to create a Faker\Generator instance
+$faker = Faker\Factory::create();
+
+$obj= new index();
+
+
+for ($i = 0; $i < 2; $i++) {
+	$data['FirstName'] = $faker->firstName;
+	$data['LastName'] = $faker->lastName;
+	$data['EmailAddress'] = $faker->email;
+	$data['Phone'] = $faker->phoneNumber;
+	$res =$obj->insertDatauser($data);
+}
+for ($i = 0; $i < 2; $i++) {
+	$data1['ProductName'] = $faker->company;
+	$data1['ProductPrice'] = $faker->setPrice(randomNumber(2));
+	$data1['DateOfCreation'] = $faker->date($format = 'Y-m-d', $max = 'now');
+	$data1['ProductQuantity'] = $faker->randomDigit;
+	$data1['Suppliers'] = $faker->name;
+	$data1['ProductCategory'] = $faker->companySuffix;
+	$res =$obj->insertDataproduct($data1);
+}
+?>
